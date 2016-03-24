@@ -1,80 +1,66 @@
 FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+HOST: http://thefretboard.co.uk/api/v1
 
 # TheFretboard
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+This is an API for thefretboard.co.uk
 
-## Questions Collection [/questions]
+## Categories [/categories/list]
 
-### List All Questions [GET]
+### List All Categories [GET]
+
+Get a list of all discussion categories.
+
+This is based on the [Vanilla categories/list API](http://docs.vanillaforums.com/api/categories/)
+
+You can see an example of the original API output by doing:
+
+curl http://forums.xamarin.com/api/v1/categories/list.json
 
 + Response 200 (application/json)
 
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
-
-### Create a New Question [POST]
-
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
-
-+ Request (application/json)
-
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
-        }
+            # This entry represents a leaf in the category tree (ParentCategoryID = -1)
+            "1": {
+                "CategoryID": 1,
+                "ParentCategoryID": -1,
+                "ChildIDs": [101],
 
-+ Response 201 (application/json)
+                "Name": "Gear"
+            },
+            
+            # This entry represents a non-leaf node in the category tree (ParentCategoryID = -1)
+            "2": {
+                "CategoryID": 2,
+                "ParentCategoryID": 0,
+                "ChildIDs": [],
 
-    + Headers
+                "Name": "Playing"
+            },
+            
+            # This entry represents a leaf in the category tree
+            "101": {
+                "CategoryID": 101,
+                "ParentCategoryID": 1,
+                "ChildIDs": [],
+                
+                "Name": "Guitar",
 
-            Location: /questions/2
-
-    + Body
-
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+                "CountAllDiscussions": 11204,
+                "CountAllComments": 489339,
+                
+                # Most recent discussion in this category
+                "LastDiscussionID": 4793,
+                "LastDiscussionUserID": 4834,
+                "LastDiscussionUserName": "Joe Bloggs",
+                "LastDiscussionUserImage": "http://thefretboard.co.uk/uploads/userpics/4834/j3484n.jpg",
+                "LastDiscussionDate": "2016-03-04 02:48:28",
+                
+                # Most recent comment in this category
+                "LastCommentID": 4349,
+                "LastCommentUserID": 2343,
+                "LastCommentUserName": "Fred Flintstone",
+                "LastCommentUserImage": "http://thefretboard.co.uk/uploads/userpics/2343/dfg4322.jpg",
+                "LastCommentDate": "2016-03-04 04:48:28",
             }
+        }
